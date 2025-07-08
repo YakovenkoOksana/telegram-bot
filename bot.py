@@ -1,3 +1,4 @@
+import os
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import (
     ApplicationBuilder, CommandHandler, MessageHandler,
@@ -51,7 +52,12 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # Main entry point
 def main():
-    app = ApplicationBuilder().token("8173104711:AAF7Ryg1mG6Wz-aPBziJWAHmySRYTmjC7Qo").build()
+    TOKEN = os.getenv("BOT_TOKEN")  # Read from environment variable
+    if not TOKEN:
+        print("❌ BOT_TOKEN environment variable not set!")
+        return
+
+    app = ApplicationBuilder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("help", help_command))
