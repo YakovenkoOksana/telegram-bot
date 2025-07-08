@@ -5,6 +5,8 @@ from telegram.ext import (
     ApplicationBuilder, CommandHandler, MessageHandler,
     CallbackQueryHandler, filters, ContextTypes
 )
+from dotenv import load_dotenv
+load_dotenv()
 
 # /start command
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -29,7 +31,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # /about command
 async def about(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("🤖 I'm a test bot created by Oksana using Python!")
+    await update.message.reply_text("🤖 I'm a test bot created by Oksana!")
 
 # Echo handler
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
