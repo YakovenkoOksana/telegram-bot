@@ -1,0 +1,30 @@
+# Ignore virtual environment
+venv/
+
+# Ignore dotenv secret file
+.env
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# VS Code settings
+.vscode/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Log or temporary files
+*.log
+*.tmp
+
+# Byte-compiled & compiled files
+*.pyc
+*.pyd
+*.so
+*.exe
+
+# Jupyter/IPython
+.ipynb_checkpoints/
