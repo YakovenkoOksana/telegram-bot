@@ -51,8 +51,8 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.message.reply_photo("https://picsum.photos/400/300")
 
 # Main entry point
-def main():
-    TOKEN = os.getenv("BOT_TOKEN")  # Read from environment variable
+async def main():
+    TOKEN = os.getenv("BOT_TOKEN")
     if not TOKEN:
         print("❌ BOT_TOKEN environment variable not set!")
         return
@@ -67,7 +67,9 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
 
     print("✅ Bot is running...")
-    app.run_polling()
+    await app.run_polling()
 
+# Entry point
 if __name__ == '__main__':
-    main()
+    import asyncio
+    asyncio.run(main())
