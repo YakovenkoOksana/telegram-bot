@@ -50,35 +50,20 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_text("Here’s a random photo!")
         await query.message.reply_photo("https://picsum.photos/400/300")
 
-# Main entry point
-async def main():
+# Final app setup — NO asyncio.run() needed
+if __name__ == '__main__':
     TOKEN = os.getenv("BOT_TOKEN")
     if not TOKEN:
         print("❌ BOT_TOKEN environment variable not set!")
-        return
+    else:
+        app = ApplicationBuilder().token(TOKEN).build()
 
-    app = ApplicationBuilder().token(TOKEN).build()
+        app.add_handler(CommandHandler("start", start))
+        app.add_handler(CommandHandler("help", help_command))
+        app.add_handler(CommandHandler("about", about))
+        app.add_handler(CommandHandler("buttons", buttons))
+        app.add_handler(CallbackQueryHandler(handle_button))
+        app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
 
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("help", help_command))
-    app.add_handler(CommandHandler("about", about))
-    app.add_handler(CommandHandler("buttons", buttons))
-    app.add_handler(CallbackQueryHandler(handle_button))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
-
-    print("✅ Bot is running...")
-    await app.run_polling()
-
-# Entry point
-import asyncio
-
-if __name__ == '__main__':
-    try:
-        asyncio.run(main())
-    except RuntimeError as e:
-        if str(e).startswith('This event loop is already running'):
-            loop = asyncio.get_event_loop()
-            loop.create_task(main())
-            loop.run_forever()
-        else:
-            raise
+        print("✅ Bot is running...")
+        app.run_polling()
