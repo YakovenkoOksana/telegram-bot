@@ -1,5 +1,6 @@
 import os
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
+import random
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import (
     ApplicationBuilder, CommandHandler, MessageHandler,
     CallbackQueryHandler, filters, ContextTypes
@@ -7,7 +8,13 @@ from telegram.ext import (
 
 # /start command
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("👋 Welcome! Type /help to see what I can do.")
+    payload = context.args[0] if context.args else None
+
+    if payload == "startnow":
+        await update.message.reply_text("👋 Welcome! Click below to get started!",
+            reply_markup=ReplyKeyboardMarkup([["/help", "/buttons"]], resize_keyboard=True))
+    else:
+        await update.message.reply_text("👋 Welcome! Type /help to see what I can do.")
 
 # /help command
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -48,7 +55,9 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_text("Hello there! 😊")
     elif query.data == "send_photo":
         await query.edit_message_text("Here’s a random photo!")
-        await query.message.reply_photo("https://picsum.photos/400/300")
+        random_id = random.randint(1, 100000)
+        image_url = f"https://picsum.photos/400/300?random={random_id}"
+        await query.message.reply_photo(image_url)
 
 # Final app setup — NO asyncio.run() needed
 if __name__ == '__main__':
